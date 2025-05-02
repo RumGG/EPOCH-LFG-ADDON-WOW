@@ -1,6 +1,8 @@
 # Looking For Group - a LFG Addon for Project Epoch, v0.0.0.1
 
-[Download Link](https://github.com/Bennylavaa/LFG)
+[Download Link](https://github.com/Bennylavaa/LFG/releases/latest/download/LFG.zip)
+
+Important note: Remove -master when extracting into your interface/addons folder and fully restart your client after each update!
 
 ## What it does NOT do ####
 This addon will not teleport you and your group inside the dungeon.
@@ -12,6 +14,8 @@ If you encounter any lua errors or other addon problems please take a screenshot
 
 ### Initial Port (v.0.0.0.1) ###
 Originally the LFT (Looking for Turtles) addon has now been ported to work with 3.3.5 specifically for Project Epoch.
+
+## Features ##
 
 ### Minimap Button ###
 Brings up the main addon frame, allowing you to Look for a group or Look for more.<Br>
