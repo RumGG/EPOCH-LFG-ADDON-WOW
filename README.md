@@ -18,7 +18,8 @@ Brings up the main addon frame, allowing you to Look for a group or Look for mor
 ![minimap](https://imgur.com/Z1uRxqz.png)
 
 ### Queueing solo (maximum 5 dungeons at a time) ###
-![queuesolo](https://imgur.com/ZWd7awX.png)
+![image](https://github.com/user-attachments/assets/9fabf9b4-a932-4d9a-9e15-21a219b70adc)
+
 
 ### InQueue Minimap Tooltip ###
 Once queued, you can check your queue status by hovering over the minimap icon.<br>
