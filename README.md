@@ -42,7 +42,7 @@ _Note:_ objectives can be moved, collapsed, or closed.<br>
 ### Find More ###
 As a leader of a group you can look for more members.<br>
 _Note:_ the default 5man group role composition(only one tank, only one healer, no more than 3 dps) must be met in order to look for more. This is limited to one dungeon at a time.<Br>
-![queuesolo](https://imgur.com/iOkkHks.png)
+![image](https://github.com/user-attachments/assets/9fabf9b4-a932-4d9a-9e15-21a219b70adc)
 
 ### Role Check ###
 Once the leader clicks find more, a role check will be initiated and when the addon finds the missing roles you will be prompted with a Group Formed window.<br>
