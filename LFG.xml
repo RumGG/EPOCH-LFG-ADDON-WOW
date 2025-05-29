@@ -1917,7 +1917,7 @@
                         </ScrollChild>
                     </ScrollFrame>
 
-                    <Button name="LFG_Minimap" movable="true" parent="UIParent" enableMouse="true" toplevel="true"
+                    <Button name="LFG_Minimap" movable="true" parent="Minimap" enableMouse="true" toplevel="true"
                             frameStrata="LOW">
                         <Size x="33" y="33"/>
                         <Anchors>
