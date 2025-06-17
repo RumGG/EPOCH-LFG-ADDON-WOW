@@ -2,7 +2,7 @@
 
 [Download Link](https://github.com/Bennylavaa/LFG/archive/refs/heads/main.zip)
 
-Important note: Remove -master when extracting into your interface/addons folder and fully restart your client after each update!
+Important note: Remove -main when extracting into your interface/addons folder and fully restart your client after each update!
 
 ## What it does NOT do ####
 This addon will not teleport you and your group inside the dungeon.
