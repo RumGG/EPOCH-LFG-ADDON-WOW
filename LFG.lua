@@ -658,12 +658,12 @@ LFGComms:SetScript("OnEvent", function()
         if event == 'CHAT_MSG_ADDON' and arg1 == LFG_ADDON_CHANNEL then
             lfdebug(arg4 .. ' says : ' .. arg2)
             if string.sub(arg2, 1, 11) == 'objectives:' and arg4 ~= me then
-                local objEx = string.split(arg2, ':')
+                local objEx = StringSplit(arg2, ':')
                 if LFG.groupFullCode ~= objEx[2] then
                     LFG.groupFullCode = objEx[2]
                 end
 
-                local objectivesString = string.split(objEx[3], '-')
+                local objectivesString = StringSplit(objEx[3], '-')
 
                 local complete = 0
 
@@ -690,7 +690,7 @@ LFGComms:SetScript("OnEvent", function()
 
                 PlaySoundFile("Interface\\Addons\\LFG\\sound\\lfg_denied.ogg")
 
-                local readyEx = string.split(arg2, ':')
+                local readyEx = StringSplit(arg2, ':')
                 local role = readyEx[2]
                 if role == 'tank' then
                     _G['LFGReadyStatusReadyTank']:SetTexture('Interface\\addons\\LFG\\images\\readycheck-notready')
@@ -709,7 +709,7 @@ LFGComms:SetScript("OnEvent", function()
                 end
             end
             if string.sub(arg2, 1, 8) == 'readyAs:' then
-                local readyEx = string.split(arg2, ':')
+                local readyEx = StringSplit(arg2, ':')
                 local role = readyEx[2]
 
                 LFG.showPartyRoleIcons(role, arg4)
@@ -746,7 +746,7 @@ LFGComms:SetScript("OnEvent", function()
             end
             if string.sub(arg2, 1, 11) == 'LFGVersion:' and arg4 ~= me then
                 if not LFG.showedUpdateNotification then
-                    local verEx = string.split(arg2, ':')
+                    local verEx = StringSplit(arg2, ':')
                     if LFG.ver(verEx[2]) > LFG.ver(addonVer) then
                         lfprint(COLOR_HUNTER .. 'Looking For Group ' .. COLOR_WHITE .. ' - new version available ' ..
                                 COLOR_GREEN .. 'v' .. verEx[2] .. COLOR_WHITE .. ' (current version ' ..
@@ -763,7 +763,7 @@ LFGComms:SetScript("OnEvent", function()
 
             if string.sub(arg2, 1, 8) == 'minimap:' then
                 if not LFG.isLeader then
-                    local miniEx = string.split(arg2, ':')
+                    local miniEx = StringSplit(arg2, ':')
                     local code = miniEx[2]
                     local tank = tonumber(miniEx[3])
                     local healer = tonumber(miniEx[4])
@@ -798,7 +798,7 @@ LFGComms:SetScript("OnEvent", function()
             end
             if string.sub(arg2, 1, 14) == 'LFMPartyReady:' then
 
-                local queueEx = string.split(arg2, ':')
+                local queueEx = StringSplit(arg2, ':')
                 local mCode = queueEx[2]
                 local objectivesCompleted = queueEx[3]
                 local objectivesTotal = queueEx[4]
@@ -844,7 +844,7 @@ LFGComms:SetScript("OnEvent", function()
                 end
             end
             if string.sub(arg2, 1, 10) == 'weInQueue:' then
-                local queueEx = string.split(arg2, ':')
+                local queueEx = StringSplit(arg2, ':')
                 LFG.weInQueue(queueEx[2])
             end
             if string.sub(arg2, 1, 10) == 'roleCheck:' then
@@ -854,7 +854,7 @@ LFGComms:SetScript("OnEvent", function()
                 lfprint('A role check has been initiated. Your group will be queued when all members have selected a role.')
                 UIErrorsFrame:AddMessage("|cff69ccf0[LFG] |cffffff00A role check has been initiated. Your group will be queued when all members have selected a role.")
 
-                local argEx = string.split(arg2, ':')
+                local argEx = StringSplit(arg2, ':')
                 local mCode = argEx[2]
                 LFG.LFMDungeonCode = mCode
                 LFG.resetGroup()
@@ -907,7 +907,7 @@ LFGComms:SetScript("OnEvent", function()
             end
 
             if string.sub(arg2, 1, 11) == 'acceptRole:' then
-                local roleEx = string.split(arg2, ':')
+                local roleEx = StringSplit(arg2, ':')
                 local roleColor = ''
 
                 if arg4 == me and not LFG.isLeader then
@@ -1098,14 +1098,14 @@ LFGComms:SetScript("OnEvent", function()
         if event == 'CHAT_MSG_CHANNEL' and string.find(arg1, '[LFG]', 1, true) and arg8 == LFG.channelIndex and arg2 ~= me and --for lfm
                 string.find(arg1, '(LFM)', 1, true) then
             --[LFG]:stratlive:(LFM):name
-            local mEx = string.split(arg1, ':')
+            local mEx = StringSplit(arg1, ':')
             if mEx[4] == me then
                 LFG.onlyAcceptFrom = arg2
                 LFG.acceptNextInvite = true
             end
         end
         if event == 'CHAT_MSG_CHANNEL' and arg8 == LFG.channelIndex and string.find(arg1, 'lfg_group_formed', 1, true) then
-            local gfEx = string.split(arg1, ':')
+            local gfEx = StringSplit(arg1, ':')
             local code = gfEx[3]
             local time = tonumber(gfEx[4])
             groupsFormedThisSession = groupsFormedThisSession + 1
@@ -1136,7 +1136,7 @@ LFGComms:SetScript("OnEvent", function()
         end
         if event == 'CHAT_MSG_CHANNEL' and string.find(arg1, '[LFG]', 1, true) and arg8 == LFG.channelIndex and arg2 ~= me and --for lfg
                 string.find(arg1, 'party:ready', 1, true) then
-            local mEx = string.split(arg1, ':')
+            local mEx = StringSplit(arg1, ':')
             LFG.groupFullCode = mEx[2] --code
 
             local healer = mEx[5]
@@ -1202,7 +1202,7 @@ LFGComms:SetScript("OnEvent", function()
                 if LFGWhoCounter.listening then
                     LFGWhoCounter.people = LFGWhoCounter.people + 1
                     if me == 'Shadowtoots' then
-                        local verEx = string.split(arg1, ':')
+                        local verEx = StringSplit(arg1, ':')
                         local ver = verEx[2]
                         local color = COLOR_GREEN
                         if LFG.ver(ver) < LFG.ver(addonVer) then
@@ -1221,10 +1221,10 @@ LFGComms:SetScript("OnEvent", function()
                     LFG.peopleLookingForGroupsDisplay = LFG.peopleLookingForGroups
                 end
 
-                local lfgEx = string.split(arg1, ' ')
+                local lfgEx = StringSplit(arg1, ' ')
 
                 for _, lfg in ipairs(lfgEx) do
-                    local spamSplit = string.split(lfg, ':')
+                    local spamSplit = StringSplit(lfg, ':')
                     local mDungeonCode = spamSplit[2]
                     local mRole = spamSplit[3] --other's role
 
@@ -1252,7 +1252,7 @@ LFGComms:SetScript("OnEvent", function()
         if event == 'CHAT_MSG_CHANNEL' and arg8 == LFG.channelIndex then
             if string.sub(arg1, 1, 4) == 'LFM:' then
 
-                local lfmEx = string.split(arg1, ':')
+                local lfmEx = StringSplit(arg1, ':')
                 local mDungeonCode = lfmEx[2] or false
                 local lfmTank = tonumber(lfmEx[3]) or 0
                 local lfmHealer = tonumber(lfmEx[4]) or 0
@@ -1276,11 +1276,11 @@ LFGComms:SetScript("OnEvent", function()
         if event == 'CHAT_MSG_CHANNEL' and arg8 == LFG.channelIndex and not LFG.oneGroupFull and (LFG.findingGroup or LFG.findingMore) and arg2 ~= me then
 
             if string.sub(arg1, 1, 6) == 'found:' then
-                local foundLongEx = string.split(arg1, ' ')
+                local foundLongEx = StringSplit(arg1, ' ')
                 
                 for i, found in ipairs(foundLongEx) do
                     if string.len(found) > 0 then
-                        local foundEx = string.split(found, ':')
+                        local foundEx = StringSplit(found, ':')
                         local mRole = foundEx[2]
                         local mDungeon = foundEx[3]
                         local name = foundEx[4]
@@ -1303,7 +1303,7 @@ LFGComms:SetScript("OnEvent", function()
             end
 
             if string.sub(arg1, 1, 10) == 'leftQueue:' then
-                local leftEx = string.split(arg1, ':')
+                local leftEx = StringSplit(arg1, ':')
                 local mRole = leftEx[2]
                 LFG.removePlayerFromVirtualParty(arg2, mRole)
             end
@@ -1311,7 +1311,7 @@ LFGComms:SetScript("OnEvent", function()
             if string.sub(arg1, 1, 10) == 'goingWith:' and
                     (string.find(LFG_ROLE, 'tank', 1, true) or LFG.isLeader) then
 
-                local withEx = string.split(arg1, ':')
+                local withEx = StringSplit(arg1, ':')
                 local leader = withEx[2]
                 local mDungeon = withEx[3]
                 local mRole = withEx[4]
@@ -1352,13 +1352,13 @@ LFGComms:SetScript("OnEvent", function()
             -- LFG
             if string.sub(arg1, 1, 4) == 'LFG:' then
 
-                local lfgEx = string.split(arg1, ' ')
+                local lfgEx = StringSplit(arg1, ' ')
                 local foundMessage = ''
                 local prioMembers = GetNumPartyMembers() + 1
                 local prioObjectives = LFG.getDungeonCompletion()
 
                 for _, lfg in ipairs(lfgEx) do
-                    local spamSplit = string.split(lfg, ':')
+                    local spamSplit = StringSplit(lfg, ':')
                     local mDungeonCode = spamSplit[2]
                     local mRole = spamSplit[3] --other's role
 
@@ -3854,7 +3854,7 @@ end
 
 function queueForFromButton(bCode)
 
-    local codeEx = string.split(bCode, '_')
+    local codeEx = StringSplit(bCode, '_')
     local qCode = codeEx[2]
 
     if _G['Dungeon_' .. qCode .. '_CheckButton']:IsEnabled() == 0 then
@@ -3874,7 +3874,7 @@ function queueFor(name, status)
     lfdebug('queue for call ' .. name)
 
     local dungeonCode = ''
-    local dung = string.split(name, '_')
+    local dung = StringSplit(name, '_')
     dungeonCode = dung[2]
     for dungeon, data in next, LFG.dungeons do
         if tonumber(dungeonCode) then
@@ -3974,7 +3974,7 @@ function joinQueue(roleID, name)
     lfdebug('join queue call ' .. name)
     lfdebug('join queue call role ' .. roleID)
 
-    local nameEx = string.split(name, '_')
+    local nameEx = StringSplit(name, '_')
     local mCode = nameEx[2]
 
     --leaveQueue('from join queue')
@@ -4214,7 +4214,7 @@ SlashCmdList["LFGDEBUG"] = function(cmd)
         end
     end
 end
-SLASH_LFG1 = "/lfg"
+SLASH_LFG1 = "/lfgaddon"
 SlashCmdList["LFG"] = function(cmd)
     if cmd then
         if string.sub(cmd, 1, 4) == 'spam' then
@@ -4693,15 +4693,15 @@ function LFG.ucFirst(a)
     return string.upper(string.sub(a, 1, 1)) .. string.lower(string.sub(a, 2, string.len(a)))
 end
 
-function string:split(delimiter)
+function StringSplit(str, delimiter)
     local result = {}
     local from = 1
-    local delim_from, delim_to = string.find(self, delimiter, from)
+    local delim_from, delim_to = string.find(str, delimiter, from)
     while delim_from do
-        table.insert(result, string.sub(self, from, delim_from - 1))
+        table.insert(result, string.sub(str, from, delim_from - 1))
         from = delim_to + 1
-        delim_from, delim_to = string.find(self, delimiter, from)
+        delim_from, delim_to = string.find(str, delimiter, from)
     end
-    table.insert(result, string.sub(self, from))
+    table.insert(result, string.sub(str, from))
     return result
 end

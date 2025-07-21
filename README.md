@@ -1,4 +1,4 @@
-# Looking For Group - a LFG Addon for Project Epoch, v0.0.0.1
+# Looking For Group - a LFG Addon for Project Epoch, v0.0.0.2
 
 [Download Link](https://github.com/Bennylavaa/LFG/archive/refs/heads/main.zip)
 
@@ -12,7 +12,7 @@ If you encounter any lua errors or other addon problems please take a screenshot
 
 ## Changes ##
 
-### Initial Port (v.0.0.0.1) ###
+### Initial Port (v.0.0.0.2) ###
 Originally the LFT (Looking for Turtles) addon has now been ported to work with 3.3.5 specifically for Project Epoch.
 
 ## Features ##
