@@ -4200,21 +4200,8 @@ function lfg_switch_tab(t)
 end
 
 -- slash commands
-
-SLASH_LFGDEBUG1 = "/lfgdebug"
-SlashCmdList["LFGDEBUG"] = function(cmd)
-    if cmd then
-        LFG_CONFIG['debug'] = not LFG_CONFIG['debug']
-        if LFG_CONFIG['debug'] then
-            lfprint('debug enabled')
-            _G['LFGTitleTime']:Show()
-        else
-            lfprint('debug disabled')
-            _G['LFGTitleTime']:Hide()
-        end
-    end
-end
 SLASH_LFG1 = "/lfgaddon"
+SLASH_LFG2 = "/lfg"
 SlashCmdList["LFG"] = function(cmd)
     if cmd then
         if string.sub(cmd, 1, 4) == 'spam' then
