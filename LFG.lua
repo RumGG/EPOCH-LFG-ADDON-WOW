@@ -1521,7 +1521,7 @@ LFG:SetScript("OnEvent", function()
             end
         end
         if event == "PLAYER_ENTERING_WORLD" then
-            LFG.level = UnitLevel('player') + 20
+            LFG.level = UnitLevel('player')
             LFG.sendMyVersion()
             lfdebug('PLAYER_ENTERING_WORLD')
             hookChatFrame(ChatFrame1);
