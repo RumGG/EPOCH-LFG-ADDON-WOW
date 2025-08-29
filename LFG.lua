@@ -4547,7 +4547,7 @@ LFG.allDungeons = {
 }
 
 LFG.eliteEncounters = {
-    ['Jintha\'Alor'] = { minLevel = 45, maxLevel = 50, code = 'ja', queued = false, canQueue = true, background = 'jinthaalor', myRole = '' },
+    ['Jintha\'Alor'] = { minLevel = 45, maxLevel = 60, code = 'ja', queued = false, canQueue = true, background = 'jinthaalor', myRole = '' },
 }
 
 LFG.bosses = {
