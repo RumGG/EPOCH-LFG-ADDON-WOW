@@ -10,52 +10,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout your private repo with write access
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}  # <-- fixes push 403
+      # 1. Checkout your private repo with write access
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}  # ensures push works
 
-    # 2. Configure Git
-    - name: Configure Git
-      run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      # 2. Configure Git
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-    # 3. Add upstream remote
-    - name: Add upstream
-      run: |
-        git remote add upstream https://github.com/Bennylavaa/LFG.git
-        git fetch upstream
+      # 3. Add upstream remote
+      - name: Add upstream
+        run: |
+          git remote add upstream https://github.com/Bennylavaa/LFG.git
+          git fetch upstream
 
-    # 4. Check for new commits
-    - name: Check for new commits
-      id: check
-      run: |
-        git checkout main
-        git log upstream/main --not main --oneline > new_commits.txt || true
-        if [ -s new_commits.txt ]; then
-          echo "new_updates=true" >> $GITHUB_ENV
-        else
-          echo "new_updates=false" >> $GITHUB_ENV
-        fi
+      # 4. Check for new commits
+      - name: Check for new commits
+        id: check
+        run: |
+          git checkout main
+          git log upstream/main --not main --oneline > new_commits.txt || true
+          if [ -s new_commits.txt ]; then
+            echo "new_updates=true" >> $GITHUB_ENV
+          else
+            echo "new_updates=false" >> $GITHUB_ENV
+          fi
 
-    # 5. Merge upstream changes and create version tag
-    - name: Merge updates & tag
-      if: env.new_updates == 'true'
-      run: |
-        git merge upstream/main --allow-unrelated-histories -m "Merge upstream updates"
-        TAG=v$(date +'%Y.%m.%d-%H%M')
-        git tag $TAG
-        git push origin main --tags
-        echo "TAG=$TAG" >> $GITHUB_ENV
+      # 5. Merge upstream changes and create version tag
+      - name: Merge updates & tag
+        if: env.new_updates == 'true'
+        run: |
+          git merge upstream/main --allow-unrelated-histories -m "Merge upstream updates"
+          TAG=v$(date +'%Y.%m.%d-%H%M')
+          git tag $TAG
+          git push origin main --tags
+          echo "TAG=$TAG" >> $GITHUB_ENV
 
-    # 6. Send Discord notification
-    - name: Send Discord Notification
-      if: env.new_updates == 'true'
-      run: |
-        curl -H "Content-Type: application/json" \
-             -X POST \
-             -d "{\"username\":\"LFG Sync Bot\",\"embeds\":[{\"title\":\"LFG Updates Applied\",\"description\":\"New upstream updates were merged into the private repo.\",\"color\":3066993,\"fields\":[{\"name\":\"Repository\",\"value\":\"${GITHUB_REPOSITORY}\"},{\"name\":\"Tag\",\"value\":\"${TAG}\"},{\"name\":\"Workflow Run\",\"value\":\"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\"}]}]}" \
-             ${{ secrets.DISCORD_WEBHOOK }}
+      # 6. Send Discord notification with upstream link
+      - name: Send Discord Notification
+        if: env.new_updates == 'true'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"username\":\"LFG Sync Bot\",\"embeds\":[{\"title\":\"LFG Updates Applied\",\"description\":\"New upstream updates were merged from [Bennylavaa/LFG](https://github.com/Bennylavaa/LFG).\",\"color\":3066993}]}\"" \
+               ${{ secrets.DISCORD_WEBHOOK }}
