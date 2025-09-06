@@ -2511,8 +2511,10 @@ function LFG.fillAvailableDungeons(queueAfter, dont_scroll)
                 LFG.availableDungeons[data.code] = CreateFrame("Frame", "Dungeon_" .. data.code, _G["DungeonListScrollFrameChildren"], "LFG_DungeonItemTemplate")
             end
 
-            -- Hide button textures for the newly created dungeon item
-		    LFG.hideButtonTextures("Dungeon_" .. data.code .. "_Button")
+            if LFG.shouldHideButtonTextures() then
+	            -- Hide button textures for the newly created dungeon item
+			    LFG.hideButtonTextures("Dungeon_" .. data.code .. "_Button")
+			end
 
             LFG.availableDungeons[data.code]:Show()
 
