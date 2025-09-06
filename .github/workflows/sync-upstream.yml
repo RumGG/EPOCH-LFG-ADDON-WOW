@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout your private repo (write access)
+    # 1. Checkout your private repo with write access
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -39,8 +39,9 @@ jobs:
           echo "new_updates=true" >> $GITHUB_ENV
         else
           echo "new_updates=false" >> $GITHUB_ENV
+        fi
 
-    # 5. Merge upstream changes and tag version
+    # 5. Merge upstream changes and create version tag
     - name: Merge updates & tag
       if: env.new_updates == 'true'
       run: |
