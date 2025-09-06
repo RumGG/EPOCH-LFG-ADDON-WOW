@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout the private repo
+    # 1. Checkout the private repo with write access
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Needed for full history
+        fetch-depth: 0        # Full history needed for merge
+        token: ${{ secrets.GITHUB_TOKEN }}  # Fixes push permission
 
     # 2. Configure Git
     - name: Configure Git
@@ -33,10 +34,9 @@ jobs:
       id: merge
       run: |
         git checkout main
-        # Merge upstream; if no new commits, this exits cleanly
         git merge upstream/main --no-edit || echo "No new changes"
-        # Check if there are new commits
-        if [ $(git rev-parse HEAD) != $(git rev-parse upstream/main) ]; then
+        # Detect if there are new commits
+        if [ "$(git rev-parse HEAD)" != "$(git rev-parse upstream/main)" ]; then
           echo "new_commits=true" >> $GITHUB_ENV
         else
           echo "new_commits=false" >> $GITHUB_ENV
