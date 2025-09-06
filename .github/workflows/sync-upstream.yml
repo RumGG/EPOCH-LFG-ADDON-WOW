@@ -1,0 +1,66 @@
+name: Sync Upstream LFG
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # Daily at 03:00 UTC
+  workflow_dispatch:     # Manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout the private repo
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Needed for full history
+
+    # 2. Configure Git
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+    # 3. Add upstream remote
+    - name: Add upstream remote
+      run: |
+        git remote add upstream https://github.com/Bennylavaa/LFG.git
+        git fetch upstream
+
+    # 4. Merge upstream changes
+    - name: Merge upstream main
+      id: merge
+      run: |
+        git checkout main
+        # Merge upstream; if no new commits, this exits cleanly
+        git merge upstream/main --no-edit || echo "No new changes"
+        # Check if there are new commits
+        if [ $(git rev-parse HEAD) != $(git rev-parse upstream/main) ]; then
+          echo "new_commits=true" >> $GITHUB_ENV
+        else
+          echo "new_commits=false" >> $GITHUB_ENV
+        fi
+
+    # 5. Push changes back to private repo
+    - name: Push changes
+      if: env.new_commits == 'true'
+      run: git push origin main
+
+    # 6. Tag new release if updates
+    - name: Create version tag
+      if: env.new_commits == 'true'
+      run: |
+        DATE_TAG=$(date +'%Y.%m.%d-%H%M')
+        git tag -a "v$DATE_TAG" -m "Upstream sync on $DATE_TAG"
+        git push origin "v$DATE_TAG"
+        echo "DATE_TAG=$DATE_TAG" >> $GITHUB_ENV
+
+    # 7. Notify Discord
+    - name: Send Discord Notification
+      if: env.new_commits == 'true'
+      run: |
+        curl -H "Content-Type: application/json" \
+        -X POST \
+        -d "{\"username\":\"LFG Sync Bot\",\"embeds\":[{\"title\":\"LFG Upstream Sync Completed\",\"description\":\"New upstream changes have been merged into your private repo.\",\"color\":3066993,\"fields\":[{\"name\":\"Repository\",\"value\":\"${GITHUB_REPOSITORY}\"},{\"name\":\"Tag\",\"value\":\"v${DATE_TAG}\"},{\"name\":\"Workflow Run\",\"value\":\"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\"}]}]}" \
+        ${{ secrets.DISCORD_WEBHOOK }}
